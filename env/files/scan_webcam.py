@@ -14,7 +14,7 @@ while True:
         cv2.putText(frame, str(obj.data), (50, 50), font, 2,
                     (255, 0, 0), 3)
 
-    cv2.imshow("Frame", frame)
+    cv2.imshow("LOL", frame)
 
     key = cv2.waitKey(1)
     if key == 27:
