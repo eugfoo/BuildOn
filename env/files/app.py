@@ -10,7 +10,6 @@ def home():
 def upload_qrcode():
     return render_template("upload_qr.html")    
 
-
 @app.route("/phototemp")
 def return_results():
     return render_template("phototemp.html")   

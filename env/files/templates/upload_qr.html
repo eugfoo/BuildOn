@@ -1,14 +1,27 @@
-<!doctype html>
-<head>
-    <title>My Webpage</title>
-</head>
-<body>
+
+{% extends "layout.html" %}
     <h1>HELLO WORLD</h1>
 
-    <form>
-        <input type="file" id="myFile" name="filename">
-        <input type="submit">
-    </form>
+    {% block content %}
+    <div class = "row">
+        <form class = "col s12">
+           <div class = "row">
+              <label>Testing File Input</label>
+              <div class = "file-field input-field">
+                 <div class = "btn">
+                    <span>Browse</span>
+                    <input type = "file" />
+                 </div>
+                 
+                 <div class = "file-path-wrapper">
+                    <input class = "file-path validate" type = "text"
+                       placeholder = "Upload file" />
+                 </div>
+              </div>
+           </div>
     
-</body>
-</html>
+        </form>       
+     </div>
+    
+
+    {% endblock %}

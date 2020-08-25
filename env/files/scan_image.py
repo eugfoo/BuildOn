@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import pyzbar.pyzbar as pyzbar
 
-image = cv2.imread("images/testingqr.png")
+image = cv2.imread("images/testingqr.PNG")
 
 
 decodedObjects = pyzbar.decode(image)
@@ -12,4 +12,3 @@ for obj in decodedObjects:
 
 cv2.imshow("Frame", image)
 cv2.waitKey(0)
-
