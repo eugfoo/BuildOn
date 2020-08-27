@@ -5,12 +5,10 @@ import pyzbar.pyzbar as pyzbar
 import uuid
 import time
 
-
 # defining face detector
 face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
 ds_factor=0.6
 font = cv2.FONT_HERSHEY_PLAIN
-
 
 class VideoCamera(object):
     def __init__(self):

@@ -3,6 +3,8 @@ import numpy as np
 import pyzbar.pyzbar as pyzbar
 
 image = cv2.imread("images/testingqr.PNG")
+face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")
+
 
 
 decodedObjects = pyzbar.decode(image)

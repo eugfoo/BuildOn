@@ -38,22 +38,14 @@ def gen(camera, info, face):
             # call safe_access_face
             yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame[0] + b'\r\n\r\n')
         if face is not None:
-
+            # do something here
             break
 
 @app.route('/video_feed')
 def video_feed():
     info = None
     face = None
-    return Response(gen(VideoCamera(), info, face), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-@app.route("/qrResultant")
-def qr_resultant():
-    return render_template("results.html")  
-
-@app.route("/phototemp")
-def return_results():
-    return render_template("phototemp.html")   
+    return Response(gen(VideoCamera(), info, face), mimetype='multipart/x-mixed-replace; boundary=frame')  
 
 if __name__ == '__main__':
     app.run(debug = True)
