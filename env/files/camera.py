@@ -20,41 +20,41 @@ class VideoCamera(object):
     def __del__(self):
         self.video.release()
 
-    def get_qrframe(self,hashnric):
+    def get_qrframe(self,info):
         success, image = self.video.read()
-        image = cv2.resize(image,None,fx=ds_factor,fy=ds_factor, interpolation=cv2.INTER_AREA)
-
+        image = cv2.resize(image,None,fx=ds_factor,fy=ds_factor, interpolation = cv2.INTER_AREA)
+        #cv2.putText(image, "Please scan QR", (50, 50), font, 2, (255, 0, 0), 3)   
         # Algo to scan QR codes
         decodedObjects = pyzbar.decode(image)
         for obj in decodedObjects:
             #print("Data", obj.data)
-            cv2.putText(image, str(obj.data), (50, 50), font, 2, (255, 0, 0), 3)   
-            hashnric = str(obj.data)
-            print(hashnric)
+            info = str(obj.data)
+            print(info)
             print("QR SCANNED!")
     
         ret, jpeg = cv2.imencode('.jpg', image)
-        list1=[jpeg.tobytes(), hashnric]
+        list1=[jpeg.tobytes(), info]
         return list1
 
-    def get_faceframe(self):
+    def get_faceframe(self, face):
         success, image = self.video.read()
         image = cv2.resize(image,None,fx=ds_factor,fy=ds_factor, interpolation = cv2.INTER_AREA)
         # face detection
+        #cv2.putText(image, "Please scan face", (50, 50), font, 2, (255, 0, 0), 3)   
         gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
         face_rects=face_cascade.detectMultiScale(gray,1.3,5)
-        # uniqueID = uuid.uuid1()
+        uniqueID = uuid.uuid1()
         for (x,y,w,h) in face_rects:
             cv2.rectangle(image,(x,y),(x+w,y+h),(0,255,0),2)
-            # cv2.imwrite("%s.jpg" % uniqueID, image)
+            face = "Face Detected"
+            cv2.imwrite("%s.jpg" % uniqueID, image)
             break
         ret, jpeg = cv2.imencode('.jpg', image)
-        list3 = [jpeg.tobytes()]
+        list3=[jpeg.tobytes(), face]
         return list3
 
     def get_loading(self):
         image = cv2.imread("images/loading.jpg")
         ret, jpeg = cv2.imencode('.jpg', image)
         list2 = [jpeg.tobytes()]
-
         return list2

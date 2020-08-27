@@ -2,9 +2,10 @@ from flask import Flask, render_template, Response, redirect, url_for
 from camera import VideoCamera
 import numpy as np
 import requests
+import cv2
+import pyzbar
 import time
-
-
+import json
 
 app=Flask(__name__)
 test = ""
@@ -17,27 +18,34 @@ def index():
 def upload_qrcode():
     return render_template("upload_qr.html")    
 
-def gen(camera, hashnric):
+def gen(camera, info, face):
     while True:
-        if hashnric is None:
-            frame = camera.get_qrframe(hashnric)
-            hashnric = frame[1]
-            print(hashnric)
-            # call miltons API gateway here...
+        if info is None:
+            frame = camera.get_qrframe(info)
+            info = frame[1]
+            print(info)
             yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame[0] + b'\r\n\r\n')
-        if hashnric is not None:
+        if info is not None:
+            # call safe_access_entry
             frame = camera.get_loading() # calls loading function after scanning QR Code 
             yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame[0] + b'\r\n\r\n')
             break
-    while True:
-        frame = camera.get_faceframe()
-        yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame[0] + b'\r\n\r\n')
 
+    while True:
+        if face is None:
+            frame = camera.get_faceframe(face)
+            face = frame[1]
+            # call safe_access_face
+            yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame[0] + b'\r\n\r\n')
+        if face is not None:
+
+            break
 
 @app.route('/video_feed')
 def video_feed():
-    hashnric = None
-    return Response(gen(VideoCamera(), hashnric), mimetype='multipart/x-mixed-replace; boundary=frame')
+    info = None
+    face = None
+    return Response(gen(VideoCamera(), info, face), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route("/qrResultant")
 def qr_resultant():
